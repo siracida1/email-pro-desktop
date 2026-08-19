@@ -47,20 +47,37 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
   };
 
   const handleSave = () => {
-    if (!formData.name || !formData.htmlContent || !formData.subject) {
-      alert(t('templates.validationError'));
+    const trimmedSubject = formData.subject?.trim() || '';
+    const trimmedContent = formData.htmlContent?.trim() || '';
+    let trimmedName = formData.name?.trim() || '';
+
+    // If template name was left empty, auto-fallback to subject or default name
+    if (!trimmedName) {
+      trimmedName = trimmedSubject || t('templates.defaultName') || 'Nueva Plantilla';
+    }
+
+    if (!trimmedSubject) {
+      alert(t('templates.missingSubject'));
       return;
     }
 
+    if (!trimmedContent) {
+      alert(t('templates.missingContent'));
+      return;
+    }
+
+    const finalData: EmailTemplate = {
+      name: trimmedName,
+      subject: trimmedSubject,
+      htmlContent: trimmedContent,
+      id: editingTemplate ? editingTemplate.id : (window.crypto.randomUUID ? window.crypto.randomUUID() : Math.random().toString(36).substring(2, 15)),
+      createdAt: editingTemplate ? editingTemplate.createdAt : Date.now()
+    };
+
     if (editingTemplate) {
-      setTemplates(prev => prev.map(t => t.id === editingTemplate.id ? { ...t, ...formData } as EmailTemplate : t));
+      setTemplates(prev => prev.map(t => t.id === editingTemplate.id ? finalData : t));
     } else {
-      const newTemplate: EmailTemplate = {
-        ...(formData as EmailTemplate),
-        id: window.crypto.randomUUID ? window.crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
-        createdAt: Date.now()
-      };
-      setTemplates(prev => [newTemplate, ...prev]);
+      setTemplates(prev => [finalData, ...prev]);
     }
     setIsModalOpen(false);
   };
@@ -247,16 +264,19 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-hidden">
           <div className="bg-white w-full h-full md:w-[95%] md:h-[90%] md:max-w-6xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="px-8 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div className="px-8 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
-                <FileText className="text-blue-600" size={24} />
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={t('templates.fieldNamePlaceholder')}
-                  className="text-xl font-bold bg-transparent outline-none border-b border-transparent hover:border-slate-200 focus:border-blue-500 transition-all min-w-[250px]"
-                />
+                <FileText className="text-blue-600 shrink-0" size={24} />
+                <div className="flex flex-col">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t('templates.nameLabel')}</label>
+                  <input
+                    type="text"
+                    value={formData.name || ''}
+                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                    placeholder={t('templates.fieldNamePlaceholder')}
+                    className="text-base font-bold text-slate-800 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 rounded-xl px-3 py-1 outline-none transition-all min-w-[260px]"
+                  />
+                </div>
               </div>
               <div className="flex items-center gap-4">
                 <div className="bg-slate-100 p-1 rounded-xl flex items-center">
