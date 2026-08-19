@@ -1,0 +1,78 @@
+{
+  "name": "massmail-pro-desktop",
+  "version": "1.0.0",
+  "description": "Aplicacion de escritorio para envio masivo de correos por SMTP",
+  "main": "electron-main.js",
+  "scripts": {
+    "dev:web": "vite",
+    "dev": "concurrently \"npm run dev:web\" \"wait-on tcp:3000 && npm run electron:start\"",
+    "start": "npm run dev",
+    "electron:start": "cross-env ELECTRON_IS_DEV=1 electron .",
+    "build:web": "vite build",
+    "build": "npm run build:electron",
+    "build:electron": "vite build && electron-builder"
+  },
+  "keywords": [
+    "email",
+    "marketing",
+    "smtp"
+  ],
+  "author": "Christian Freelance",
+  "license": "MIT",
+  "build": {
+    "appId": "com.massmail.pro",
+    "productName": "MassMail Pro",
+    "compression": "maximum",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron-main.js",
+      "preload.js",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MassMail Pro",
+      "installerLanguages": ["en_US", "es_ES", "fr_FR"],
+      "displayLanguageSelector": true,
+      "unicode": true
+    }
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/node": "^25.0.3",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^42.0.0",
+    "electron-builder": "^26.8.1",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "wait-on": "^9.0.3"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.2",
+    "electron-store": "^8.1.0",
+    "lucide-react": "^0.562.0",
+    "nodemailer": "^8.0.7",
+    "papaparse": "^5.5.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "recharts": "^3.6.0"
+  }
+}

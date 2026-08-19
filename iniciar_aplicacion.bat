@@ -1,0 +1,31 @@
+@echo off
+title MassMail Pro Desktop Launcher
+cls
+echo ========================================================
+echo         MassMail Pro Desktop - Initializer
+echo ========================================================
+echo.
+
+node -v >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Node.js is not installed on this system.
+    echo Please download and install Node.js from https://nodejs.org/
+    echo.
+    pause
+    exit /b
+)
+
+if not exist node_modules (
+    echo [INFO] First run detected. Installing dependencies automatically...
+    echo.
+    call npm install
+    if %errorlevel% neq 0 (
+        echo [ERROR] Failed to install npm dependencies.
+        pause
+        exit /b
+    )
+)
+
+echo [INFO] Starting MassMail Pro Desktop...
+echo.
+call npm start
