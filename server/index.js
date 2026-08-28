@@ -16,6 +16,12 @@ const isProd = process.env.NODE_ENV === 'production';
 // process), PORT alone is used, matching what most Node hosts inject.
 const PORT = process.env.MASSMAIL_API_PORT || process.env.PORT || 3001;
 
+// Behind a reverse proxy (Apache/nginx terminating TLS), Express only sees a
+// plain HTTP connection to the Node process. Without trust proxy, req.secure
+// stays false and express-session silently drops the Secure cookie instead
+// of setting it, breaking login. Trusting X-Forwarded-Proto fixes that.
+if (isProd) app.set('trust proxy', 1);
+
 app.use(express.json({ limit: '5mb' }));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
