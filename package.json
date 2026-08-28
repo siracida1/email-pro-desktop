@@ -1,0 +1,46 @@
+{
+  "name": "massmail-pro-web",
+  "version": "2.0.0",
+  "description": "Aplicacion web para envio masivo de correos por SMTP",
+  "type": "commonjs",
+  "scripts": {
+    "dev:web": "vite",
+    "dev:server": "node --watch server/index.js",
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:server\"",
+    "build": "vite build",
+    "start": "node server/index.js"
+  },
+  "keywords": [
+    "email",
+    "marketing",
+    "smtp"
+  ],
+  "author": "Christian Freelance",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/node": "^25.0.3",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dompurify": "^3.4.2",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "lucide-react": "^0.562.0",
+    "nodemailer": "^8.0.7",
+    "papaparse": "^5.5.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "recharts": "^3.6.0"
+  }
+}

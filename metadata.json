@@ -1,0 +1,9 @@
+
+{
+  "name": "MassMail Pro Desktop",
+  "description": "A professional-grade mass email campaign manager with HTML template creation, SMTP account management, and CSV recipient importing.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
