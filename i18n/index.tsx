@@ -46,7 +46,7 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let text = translations[locale]?.[key] ?? translations['es']?.[key] ?? key;
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
-        text = text.replace(new RegExp(`\\{\\{${k}\\}\\}`, 'g'), String(v));
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
       });
     }
     return text;
