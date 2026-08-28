@@ -9,7 +9,12 @@ const emailRoutes = require('./routes/email');
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
-const PORT = process.env.PORT || 3001;
+// MASSMAIL_API_PORT takes priority over PORT: in local dev, PORT (and other
+// generically-named port variables) may be claimed by the Vite dev server
+// (npm run dev:web) or injected by tooling, so the API needs an unambiguous
+// variable of its own to avoid colliding with it. In production (no Vite
+// process), PORT alone is used, matching what most Node hosts inject.
+const PORT = process.env.MASSMAIL_API_PORT || process.env.PORT || 3001;
 
 app.use(express.json({ limit: '5mb' }));
 app.use(session({
