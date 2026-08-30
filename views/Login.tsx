@@ -29,7 +29,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-sm bg-white rounded-3xl shadow-xl border border-slate-200 p-8">
+      <div className="w-full max-w-sm bg-zinc-50 rounded-3xl shadow-xl border border-slate-200 p-8">
         <div className="flex items-center gap-3 mb-6">
           <div className="bg-blue-600 p-2 rounded-lg text-white">
             <Send size={24} />
@@ -46,7 +46,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess }) => {
                 autoFocus
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               />
             </div>
           </div>

@@ -124,7 +124,7 @@ const Accounts: React.FC<AccountsProps> = ({ accounts, setAccounts }) => {
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               placeholder={t('accounts.searchPlaceholder')}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
             />
           </div>
           <button
@@ -155,7 +155,7 @@ const Accounts: React.FC<AccountsProps> = ({ accounts, setAccounts }) => {
         )}
 
         {filteredAccounts.map((acc) => (
-          <div key={acc.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col group hover:border-blue-200 transition-colors">
+          <div key={acc.id} className="bg-zinc-50 p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col group hover:border-blue-200 transition-colors">
             <div className="flex items-start justify-between mb-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
@@ -200,7 +200,7 @@ const Accounts: React.FC<AccountsProps> = ({ accounts, setAccounts }) => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+          <div className="bg-zinc-50 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="p-8">
               <h3 className="text-2xl font-bold mb-6">{editingAccount ? t('accounts.editTitle') : t('accounts.addTitle')}</h3>
 
@@ -294,7 +294,7 @@ const Accounts: React.FC<AccountsProps> = ({ accounts, setAccounts }) => {
                     <button
                       onClick={handleTestSmtp}
                       disabled={smtpTest.status === 'testing'}
-                      className="px-4 py-2 text-sm font-semibold rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-60 disabled:cursor-wait transition-all"
+                      className="px-4 py-2 text-sm font-semibold rounded-xl bg-zinc-50 border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-60 disabled:cursor-wait transition-all"
                     >
                       {smtpTest.status === 'testing' ? t('accounts.smtpTesting') : t('accounts.smtpTestButton')}
                     </button>

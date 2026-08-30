@@ -175,7 +175,7 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               placeholder={t('templates.searchPlaceholder')}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
             />
           </div>
           <button
@@ -206,7 +206,7 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
         )}
 
         {filteredTemplates.map((template) => (
-          <div key={template.id} className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col hover:border-blue-200 transition-all group">
+          <div key={template.id} className="bg-zinc-50 rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col hover:border-blue-200 transition-all group">
             <div className="h-40 bg-slate-50 relative overflow-hidden flex items-center justify-center p-4">
               <div
                 className="w-full h-full scale-50 origin-top pointer-events-none opacity-40 group-hover:opacity-60 transition-opacity"
@@ -214,16 +214,16 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
               <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => duplicateTemplate(template)} className="p-2 bg-white shadow-sm border border-slate-100 text-slate-400 hover:text-blue-500 rounded-lg transition-all" title={t('templates.duplicateTitle')}>
+                <button onClick={() => duplicateTemplate(template)} className="p-2 bg-zinc-50 shadow-sm border border-slate-100 text-slate-400 hover:text-blue-500 rounded-lg transition-all" title={t('templates.duplicateTitle')}>
                   <Copy size={16} />
                 </button>
-                <button onClick={() => exportTemplate(template)} className="p-2 bg-white shadow-sm border border-slate-100 text-slate-400 hover:text-green-600 rounded-lg transition-all" title={t('templates.exportTitle')}>
+                <button onClick={() => exportTemplate(template)} className="p-2 bg-zinc-50 shadow-sm border border-slate-100 text-slate-400 hover:text-green-600 rounded-lg transition-all" title={t('templates.exportTitle')}>
                   <Download size={16} />
                 </button>
-                <button onClick={() => handleOpenModal(template)} className="p-2 bg-white shadow-sm border border-slate-100 text-slate-400 hover:text-blue-500 rounded-lg transition-all">
+                <button onClick={() => handleOpenModal(template)} className="p-2 bg-zinc-50 shadow-sm border border-slate-100 text-slate-400 hover:text-blue-500 rounded-lg transition-all">
                   <Edit3 size={16} />
                 </button>
-                <button onClick={() => handleDelete(template.id)} className="p-2 bg-white shadow-sm border border-slate-100 text-slate-400 hover:text-red-500 rounded-lg transition-all">
+                <button onClick={() => handleDelete(template.id)} className="p-2 bg-zinc-50 shadow-sm border border-slate-100 text-slate-400 hover:text-red-500 rounded-lg transition-all">
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -256,7 +256,7 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
       {/* Editor Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-hidden">
-          <div className="bg-white w-full h-full md:w-[95%] md:h-[90%] md:max-w-6xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+          <div className="bg-zinc-50 w-full h-full md:w-[95%] md:h-[90%] md:max-w-6xl md:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
             <div className="px-8 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
@@ -268,7 +268,7 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
                     value={formData.name || ''}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                     placeholder={t('templates.fieldNamePlaceholder')}
-                    className="text-base font-bold text-slate-800 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 rounded-xl px-3 py-1 outline-none transition-all min-w-[260px]"
+                    className="text-base font-bold text-slate-800 bg-slate-50 border border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:bg-zinc-50 focus:ring-2 focus:ring-blue-100 rounded-xl px-3 py-1 outline-none transition-all min-w-[260px]"
                   />
                 </div>
               </div>
@@ -276,19 +276,19 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
                 <div className="bg-slate-100 p-1 rounded-xl flex items-center">
                   <button
                     onClick={() => setViewMode('edit')}
-                    className={`px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all ${viewMode === 'edit' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
+                    className={`px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all ${viewMode === 'edit' ? 'bg-zinc-50 shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
                   >
                     <Code size={16} /> {t('templates.tabCode')}
                   </button>
                   <button
                     onClick={() => setViewMode('preview')}
-                    className={`px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all ${viewMode === 'preview' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
+                    className={`px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all ${viewMode === 'preview' ? 'bg-zinc-50 shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
                   >
                     <Eye size={16} /> {t('templates.tabPreview')}
                   </button>
                   <button
                     onClick={() => setViewMode('split')}
-                    className={`px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all ${viewMode === 'split' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
+                    className={`px-4 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all ${viewMode === 'split' ? 'bg-zinc-50 shadow-sm text-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
                   >
                     <Columns2 size={16} /> {t('templates.tabSplit')}
                   </button>
@@ -389,7 +389,7 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
                         </div>
                         <button
                           onClick={() => insertPlaceholder(item.tag)}
-                          className="text-[10px] bg-white border border-slate-200 px-2 py-1 rounded hover:bg-slate-50 transition-colors"
+                          className="text-[10px] bg-zinc-50 border border-slate-200 px-2 py-1 rounded hover:bg-slate-50 transition-colors"
                         >
                           {t('templates.insertButton')}
                         </button>
@@ -419,7 +419,7 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
                       spellCheck={false}
                     />
                     <div className="overflow-y-auto p-6 bg-slate-50">
-                      <div className="bg-white shadow-xl rounded-xl overflow-hidden min-h-[500px]">
+                      <div className="bg-zinc-50 shadow-xl rounded-xl overflow-hidden min-h-[500px]">
                         <div className="p-4 bg-slate-50 border-b border-slate-100 text-xs text-slate-400 flex items-center gap-2">
                           <span className="w-3 h-3 rounded-full bg-red-400"></span>
                           <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
@@ -432,7 +432,7 @@ const Templates: React.FC<TemplatesProps> = ({ templates, setTemplates }) => {
                   </div>
                 ) : (
                   <div className="flex-1 p-8 overflow-y-auto flex justify-center">
-                    <div className="w-full max-w-2xl bg-white shadow-2xl rounded-xl overflow-hidden min-h-[500px]">
+                    <div className="w-full max-w-2xl bg-zinc-50 shadow-2xl rounded-xl overflow-hidden min-h-[500px]">
                       <div className="p-4 bg-slate-50 border-b border-slate-100 text-xs text-slate-400 flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full bg-red-400"></span>
                         <span className="w-3 h-3 rounded-full bg-yellow-400"></span>

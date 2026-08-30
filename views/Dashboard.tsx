@@ -37,7 +37,7 @@ const Dashboard: React.FC<DashboardProps> = ({ campaigns, templatesCount, accoun
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+          <div key={i} className="bg-zinc-50 p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
             <div className={`${stat.bg} ${stat.color} p-3 rounded-xl`}>
               {stat.icon}
             </div>
@@ -50,7 +50,7 @@ const Dashboard: React.FC<DashboardProps> = ({ campaigns, templatesCount, accoun
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+        <div className="lg:col-span-2 bg-zinc-50 p-8 rounded-2xl shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-lg font-bold flex items-center gap-2">
               <TrendingUp size={20} className="text-blue-500" />
@@ -79,7 +79,7 @@ const Dashboard: React.FC<DashboardProps> = ({ campaigns, templatesCount, accoun
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+        <div className="bg-zinc-50 p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
           <h3 className="text-lg font-bold flex items-center gap-2 mb-6">
             <Clock size={20} className="text-slate-500" />
             {t('dashboard.recentActivity')}

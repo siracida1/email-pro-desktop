@@ -15,7 +15,9 @@ import {
   Trash2,
   Download,
   RotateCcw,
-  Globe
+  Globe,
+  Sun,
+  Moon
 } from 'lucide-react';
 import Dashboard from './views/Dashboard';
 import Accounts from './views/Accounts';
@@ -25,11 +27,13 @@ import CampaignWizard from './views/CampaignWizard';
 import SettingsView from './views/Settings';
 import Login from './views/Login';
 import { I18nProvider, useI18n } from './i18n';
+import { ThemeProvider, useTheme } from './theme';
 import { View, EmailAccount, EmailTemplate, Campaign, Recipient, RecipientList } from './types';
 import * as api from './services/api';
 
 const AppContent: React.FC = () => {
-  const { t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
+  const { theme, toggleTheme } = useTheme();
   const [activeView, setActiveView] = useState<View>('dashboard');
   const [accounts, setAccounts] = useState<EmailAccount[]>([]);
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
@@ -180,7 +184,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="flex h-screen bg-slate-50 text-slate-800 overflow-hidden relative">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col shadow-sm z-10">
+      <aside className="w-64 bg-zinc-50 border-r border-slate-200 flex flex-col shadow-sm z-10">
         <div className="p-6 flex items-center gap-3">
           <div className="bg-blue-600 p-2 rounded-lg text-white">
             <Send size={24} />
@@ -214,6 +218,30 @@ const AppContent: React.FC = () => {
             <Plus size={20} />
             {t('app.newCampaign')}
           </button>
+        </div>
+
+        <div className="px-4 pb-3 flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? t('app.switchToLight') : t('app.switchToDark')}
+            className="p-2.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-all"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <div className="flex-1 flex items-center gap-1 bg-slate-100 rounded-lg p-1">
+            <button
+              onClick={() => setLocale('es')}
+              className={`flex-1 py-1.5 rounded-md text-xs font-semibold transition-all ${locale === 'es' ? 'bg-zinc-50 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              ES
+            </button>
+            <button
+              onClick={() => setLocale('en')}
+              className={`flex-1 py-1.5 rounded-md text-xs font-semibold transition-all ${locale === 'en' ? 'bg-zinc-50 text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              EN
+            </button>
+          </div>
         </div>
 
         <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-center">
@@ -273,12 +301,12 @@ const AppContent: React.FC = () => {
                       value={campaignSearch}
                       onChange={e => setCampaignSearch(e.target.value)}
                       placeholder={t('campaigns.searchPlaceholder')}
-                      className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
+                      className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
                     />
                   </div>
                 </div>
                 {campaigns.length === 0 ? (
-                  <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
+                  <div className="bg-zinc-50 border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
                     <div className="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Mail className="text-slate-400" size={32} />
                     </div>
@@ -292,7 +320,7 @@ const AppContent: React.FC = () => {
                     </button>
                   </div>
                 ) : filteredCampaigns.length === 0 ? (
-                  <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
+                  <div className="bg-zinc-50 border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
                     <Search className="mx-auto text-slate-300 mb-4" size={40} />
                     <h3 className="text-lg font-semibold mb-1">{t('campaigns.noResults')}</h3>
                     <p className="text-slate-500">{t('campaigns.noResultsHint')}</p>
@@ -300,7 +328,7 @@ const AppContent: React.FC = () => {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredCampaigns.map(c => (
-                      <div key={c.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                      <div key={c.id} className="bg-zinc-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
                         <div className="flex items-center justify-between mb-4">
                           <span className={`text-xs px-2 py-1 rounded-full font-medium ${c.status === 'completed' ? 'bg-green-100 text-green-700' :
                             c.status === 'sending' ? 'bg-blue-100 text-blue-700 animate-pulse' : 'bg-slate-100 text-slate-700'
@@ -394,7 +422,7 @@ const AppContent: React.FC = () => {
       {/* Exit Confirmation Modal */}
       {showExitConfirm && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8 border border-slate-200 animate-in zoom-in-95 duration-200">
+          <div className="bg-zinc-50 w-full max-w-md rounded-3xl shadow-2xl p-8 border border-slate-200 animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between mb-6">
               <div className={`p-3 rounded-2xl ${isProcessing ? 'bg-amber-100 text-amber-600' : 'bg-red-100 text-red-600'}`}>
                 <AlertTriangle size={24} />
@@ -450,11 +478,13 @@ const AuthGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const App: React.FC = () => {
   return (
-    <I18nProvider>
-      <AuthGate>
-        <AppContent />
-      </AuthGate>
-    </I18nProvider>
+    <ThemeProvider>
+      <I18nProvider>
+        <AuthGate>
+          <AppContent />
+        </AuthGate>
+      </I18nProvider>
+    </ThemeProvider>
   );
 };
 

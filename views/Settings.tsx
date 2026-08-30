@@ -20,7 +20,7 @@ const Settings: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+        <div className="bg-zinc-50 p-8 rounded-2xl shadow-sm border border-slate-100 space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-blue-50 text-blue-600 p-3 rounded-xl">
               <Globe size={24} />
@@ -39,7 +39,7 @@ const Settings: React.FC = () => {
                 className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                   locale === lang.code
                     ? 'border-blue-600 bg-blue-50'
-                    : 'border-slate-100 hover:border-slate-200 bg-white'
+                    : 'border-slate-100 hover:border-slate-200 bg-zinc-50'
                 }`}
               >
                 <span className="text-2xl">{lang.flag}</span>
@@ -56,7 +56,7 @@ const Settings: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+        <div className="bg-zinc-50 p-8 rounded-2xl shadow-sm border border-slate-100 space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-purple-50 text-purple-600 p-3 rounded-xl">
               <Heart size={24} />

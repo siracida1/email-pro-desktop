@@ -1,6 +1,8 @@
 {
-  "app.title": "MassMail Pro",
+  "app.title": "EMKT Zittex",
   "app.newCampaign": "Nueva Campaña",
+  "app.switchToLight": "Cambiar a modo claro",
+  "app.switchToDark": "Cambiar a modo oscuro",
   "app.exit": "Cerrar Sesión",
   "app.confirmExit.title.processing": "¿Interrumpir envío?",
   "app.confirmExit.title.normal": "¿Cerrar sesión?",

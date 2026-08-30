@@ -204,7 +204,7 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               placeholder={t('lists.searchPlaceholder')}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-sm"
             />
           </div>
           <button
@@ -218,7 +218,7 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
       </div>
 
       {lists.length === 0 ? (
-        <div className="py-20 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-white px-6">
+        <div className="py-20 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-zinc-50 px-6">
           <Users className="mx-auto text-slate-300 mb-4" size={48} />
           <h3 className="text-lg font-semibold text-slate-900">{t('lists.empty')}</h3>
           <p className="text-slate-500 mt-2">{t('lists.emptyHint')}</p>
@@ -231,7 +231,7 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
           </button>
         </div>
       ) : filteredLists.length === 0 ? (
-        <div className="py-20 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-white">
+        <div className="py-20 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-zinc-50">
           <Search className="mx-auto text-slate-300 mb-4" size={40} />
           <h3 className="text-lg font-semibold text-slate-900">{t('lists.noResults')}</h3>
           <p className="text-slate-500 mt-2">{t('lists.noResultsHint')}</p>
@@ -239,7 +239,7 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredLists.map(list => (
-            <div key={list.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-colors">
+            <div key={list.id} className="bg-zinc-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-colors">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4 min-w-0">
                   <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
@@ -290,7 +290,7 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
 
       {isImportOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+          <div className="w-full max-w-3xl bg-zinc-50 rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
             <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
               <div>
                 <h3 className="text-xl font-bold text-slate-900">{t('lists.importTitle')}</h3>
@@ -375,7 +375,7 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
             </div>
 
             <div className="flex justify-end gap-3 px-6 py-5 border-t border-slate-100 bg-slate-50">
-              <button onClick={closeImport} className="px-5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-100">
+              <button onClick={closeImport} className="px-5 py-2.5 rounded-xl bg-zinc-50 border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-100">
                 {t('lists.cancel')}
               </button>
               <button

@@ -346,7 +346,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
         </button>
       </div>
 
-      <div className="flex items-center justify-between bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+      <div className="flex items-center justify-between bg-zinc-50 p-6 rounded-3xl shadow-sm border border-slate-100">
         {steps.map((step, idx) => (
           <React.Fragment key={step.id}>
             <div className="flex items-center gap-4">
@@ -365,7 +365,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
         ))}
       </div>
 
-      <div className="bg-white p-10 rounded-3xl shadow-lg border border-slate-100 min-h-[400px] flex flex-col">
+      <div className="bg-zinc-50 p-10 rounded-3xl shadow-lg border border-slate-100 min-h-[400px] flex flex-col">
         {currentStep === 1 && (
           <div className="space-y-8 animate-in fade-in duration-300">
             <div>
@@ -412,7 +412,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
                         className="hidden"
                       />
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedAccount === acc.id ? 'border-blue-600 bg-blue-600' : 'border-slate-300'}`}>
-                        {selectedAccount === acc.id && <div className="w-2 h-2 rounded-full bg-white" />}
+                        {selectedAccount === acc.id && <div className="w-2 h-2 rounded-full bg-zinc-50" />}
                       </div>
                       <div>
                         <p className="font-bold text-sm">{acc.name}</p>
@@ -455,7 +455,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
                         className="hidden"
                       />
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedTemplate === t.id ? 'border-blue-600 bg-blue-600' : 'border-slate-300'}`}>
-                        {selectedTemplate === t.id && <div className="w-2 h-2 rounded-full bg-white" />}
+                        {selectedTemplate === t.id && <div className="w-2 h-2 rounded-full bg-zinc-50" />}
                       </div>
                       <div>
                         <p className="font-bold text-sm">{t.name}</p>
@@ -502,7 +502,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
                         setCsvSummary({ valid: list.recipients.length, invalid: 0, duplicates: 0 });
                         setUploadedFileName(list.sourceFileName || '');
                       }}
-                      className="text-left p-4 rounded-xl bg-white border border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-all"
+                      className="text-left p-4 rounded-xl bg-zinc-50 border border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-all"
                     >
                       <p className="font-bold text-sm text-slate-900 truncate">{list.name}</p>
                       <p className="text-xs text-slate-500 mt-1">{t('lists.recipientsCount', { count: list.recipients.length })}</p>
@@ -522,7 +522,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
               </div>
               <h3 className="text-xl font-bold mb-2">{t('campaignWizard.uploadTitle')}</h3>
               <p className="text-slate-500 mb-6">{t('campaignWizard.uploadHint')}</p>
-              <button className="bg-white border border-slate-200 text-slate-700 font-bold py-2.5 px-8 rounded-xl shadow-sm hover:shadow-md transition-all">
+              <button className="bg-zinc-50 border border-slate-200 text-slate-700 font-bold py-2.5 px-8 rounded-xl shadow-sm hover:shadow-md transition-all">
                 {t('campaignWizard.uploadButton')}
               </button>
               <input
@@ -561,35 +561,35 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
                     value={listName}
                     onChange={e => setListName(e.target.value)}
                     placeholder={t('campaignWizard.saveListNamePlaceholder')}
-                    className="sm:col-span-2 px-4 py-2.5 rounded-xl border border-green-200 bg-white text-sm outline-none focus:ring-2 focus:ring-green-500"
+                    className="sm:col-span-2 px-4 py-2.5 rounded-xl border border-green-200 bg-zinc-50 text-sm outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <input
                     type="text"
                     value={listClassification}
                     onChange={e => setListClassification(e.target.value)}
                     placeholder={t('campaignWizard.saveListClassificationPlaceholder')}
-                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-white text-sm outline-none focus:ring-2 focus:ring-green-500"
+                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-zinc-50 text-sm outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <input
                     type="text"
                     value={listZone}
                     onChange={e => setListZone(e.target.value)}
                     placeholder={t('campaignWizard.saveListZonePlaceholder')}
-                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-white text-sm outline-none focus:ring-2 focus:ring-green-500"
+                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-zinc-50 text-sm outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <input
                     type="text"
                     value={listCity}
                     onChange={e => setListCity(e.target.value)}
                     placeholder={t('campaignWizard.saveListCityPlaceholder')}
-                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-white text-sm outline-none focus:ring-2 focus:ring-green-500"
+                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-zinc-50 text-sm outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <input
                     type="text"
                     value={listCountry}
                     onChange={e => setListCountry(e.target.value)}
                     placeholder={t('campaignWizard.saveListCountryPlaceholder')}
-                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-white text-sm outline-none focus:ring-2 focus:ring-green-500"
+                    className="px-4 py-2.5 rounded-xl border border-green-200 bg-zinc-50 text-sm outline-none focus:ring-2 focus:ring-green-500"
                   />
                   <button
                     onClick={saveCurrentRecipientsAsList}
@@ -652,7 +652,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
                       <select
                         value={sendDelayMs}
                         onChange={e => setSendDelayMs(Number(e.target.value))}
-                        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full rounded-xl border border-slate-200 bg-zinc-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value={0}>{t('campaignWizard.reviewDelayNone')}</option>
                         <option value={1000}>{t('campaignWizard.reviewDelay1s')}</option>
@@ -666,7 +666,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
                       <select
                         value={maxRetries}
                         onChange={e => setMaxRetries(Number(e.target.value))}
-                        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full rounded-xl border border-slate-200 bg-zinc-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value={0}>0</option>
                         <option value={1}>1</option>
@@ -685,7 +685,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({
                 <h4 className="text-lg font-bold">{t('campaignWizard.reviewReady')}</h4>
                 <p className="text-slate-500 text-sm">{t('campaignWizard.reviewReadyText', { count: recipients.length })}</p>
                 {previewContent && (
-                  <div className="w-full text-left border border-slate-100 rounded-2xl overflow-hidden bg-white">
+                  <div className="w-full text-left border border-slate-100 rounded-2xl overflow-hidden bg-zinc-50">
                     <div className="px-4 py-3 border-b border-slate-100">
                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t('campaignWizard.reviewPreview')}</p>
                       <p className="text-sm font-semibold text-slate-900 truncate mt-1">{previewContent.subject}</p>
