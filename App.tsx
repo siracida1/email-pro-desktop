@@ -26,6 +26,7 @@ import RecipientLists from './views/RecipientLists';
 import CampaignWizard from './views/CampaignWizard';
 import SettingsView from './views/Settings';
 import Login from './views/Login';
+import HelpWidget from './views/HelpWidget';
 import { I18nProvider, useI18n } from './i18n';
 import { ThemeProvider, useTheme } from './theme';
 import { View, EmailAccount, EmailTemplate, Campaign, Recipient, RecipientList } from './types';
@@ -460,6 +461,8 @@ const AppContent: React.FC = () => {
           </div>
         </div>
       )}
+
+      <HelpWidget />
     </div>
   );
 };

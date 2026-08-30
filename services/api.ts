@@ -69,3 +69,11 @@ export async function checkSession(): Promise<boolean> {
     return false;
   }
 }
+
+export async function askAiHelp(question: string): Promise<{ answer?: string; error?: string }> {
+  const response = await apiFetch('/ai/ask', {
+    method: 'POST',
+    body: JSON.stringify({ question })
+  });
+  return response.json();
+}

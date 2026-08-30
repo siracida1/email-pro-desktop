@@ -6,6 +6,7 @@ const session = require('express-session');
 const authRoutes = require('./routes/auth');
 const dataRoutes = require('./routes/data');
 const emailRoutes = require('./routes/email');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
@@ -38,6 +39,7 @@ app.use(session({
 app.use('/api/auth', authRoutes);
 app.use('/api/data', dataRoutes);
 app.use('/api/email', emailRoutes);
+app.use('/api/ai', aiRoutes);
 
 const distDir = path.join(__dirname, '..', 'dist');
 app.use(express.static(distDir));
