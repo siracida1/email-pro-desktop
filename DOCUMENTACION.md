@@ -1,331 +1,215 @@
-# MassMail Pro Desktop
+# EMKT Zittex — Manual de Usuario
 
-Aplicación de escritorio para el envío masivo de correos electrónicos vía SMTP. Desarrollada con Electron + React + TypeScript.
+Aplicación web para armar, gestionar y enviar campañas de email marketing masivo vía SMTP. Desarrollada con React + TypeScript (frontend) y Express/Node (backend).
 
 ---
 
 ## Índice
 
-1. [Requisitos del Sistema](#requisitos-del-sistema)
-2. [Instalación](#instalación)
-3. [Guía de Uso](#guía-de-uso)
-   - [Ajustes / Idioma](#1-ajustes--idioma)
-   - [Cuentas de Correo (SMTP)](#2-cuentas-de-correo-smtp)
-   - [Plantillas de Correo](#3-plantillas-de-correo)
-   - [Listas de Destinatarios](#4-listas-de-destinatarios)
-   - [Asistente de Campañas](#5-asistente-de-campañas)
-   - [Historial de Campañas](#6-historial-de-campañas)
-4. [Solución de Problemas](#solución-de-problemas)
+0. [Acceso](#0-acceso)
+1. [Panel de Control](#1-panel-de-control)
+2. [Cuentas de Correo (SMTP)](#2-cuentas-de-correo-smtp)
+3. [Plantillas de Correo](#3-plantillas-de-correo)
+4. [Listas de Destinatarios](#4-listas-de-destinatarios)
+5. [Asistente de Campañas](#5-asistente-de-campañas)
+6. [Historial de Campañas](#6-historial-de-campañas)
+7. [Ajustes](#7-ajustes)
+8. [Tema claro/oscuro e idioma rápido](#8-tema-clarooscuro-e-idioma-rápido)
+9. [Asistente de ayuda con IA](#9-asistente-de-ayuda-con-ia)
+10. [Solución de Problemas](#10-solución-de-problemas)
 
 ---
 
-## Requisitos del Sistema
+## 0. Acceso
 
-### Mínimos
-- **Sistema Operativo:** Windows 10 u 11 (64 bits)
-- **Procesador:** Intel Core i3 o AMD equivalente (o superior)
-- **Memoria RAM:** 4 GB
-- **Almacenamiento:** 500 MB de espacio libre
-- **Conexión a Internet:** Necesaria para el envío de correos SMTP
+EMKT Zittex es de un solo usuario/contraseña compartida (no tiene cuentas individuales por persona). Para entrar:
 
-### Recomendados
-- **Sistema Operativo:** Windows 11 (64 bits)
-- **Procesador:** Intel Core i5 o AMD Ryzen 5 (o superior)
-- **Memoria RAM:** 8 GB o más
-- **Almacenamiento:** 1 GB de espacio libre
-- **Conexión a Internet:** Banda ancha estable
+1. Ir a la URL de la app.
+2. Escribir la contraseña configurada.
+3. Tocar **Ingresar**.
 
-### Dependencias (solo para desarrollo)
-- **Node.js:** v18 o superior
-- **npm:** v9 o superior
-- **Git** (opcional, para control de versiones)
+La sesión queda guardada en el navegador (cookie) durante 7 días. Para salir, usar **Cerrar Sesión** al pie de la barra lateral — pide confirmación, y si hay una campaña enviándose en ese momento avisa que se va a interrumpir.
 
 ---
 
-## Instalación
+## 1. Panel de Control
 
-### Para usuarios finales (ejecutable compilado)
+Es la primera pantalla al entrar. Muestra:
 
-1. Descarga el instalador `MassMail Pro Setup 1.0.0.exe` o el ejecutable portátil `MassMail Pro 1.0.0.exe` desde la carpeta `release/`.
-2. **Instalador:** Ejecuta el archivo `.exe` y sigue los pasos del asistente. Puedes elegir la carpeta de instalación y si deseas accesos directos.
-3. **Portátil:** Ejecuta el archivo `.exe` directamente. No requiere instalación.
-4. La aplicación se abrirá en pantalla completa maximizada.
-
-### Para desarrolladores (desde código fuente)
-
-1. Clona o descarga el repositorio.
-2. Abre una terminal en la carpeta del proyecto.
-3. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-4. Inicia el entorno de desarrollo:
-   ```bash
-   npm run dev
-   ```
-   Esto abrirá la aplicación con recarga en caliente (hot reload).
-5. Para compilar una versión de producción:
-   ```bash
-   npm run build
-   ```
-   Los ejecutables se generarán en la carpeta `release/`.
+- **Correos Enviados**, **Plantillas Activas**, **Cuentas de Envío**, **Tasa de Éxito**: estadísticas generales acumuladas.
+- **Rendimiento de Campañas Recientes**: gráfico de barras con los envíos de las últimas campañas.
+- **Actividad Reciente**: últimas 5 campañas completadas, con fecha y hora.
 
 ---
 
-## Guía de Uso
+## 2. Cuentas de Correo (SMTP)
 
-### 1. Ajustes / Idioma
+Las cuentas SMTP son desde donde se envían los correos. Sección **Cuentas** en la barra lateral.
 
-La sección de **Ajustes** (icono de globo en la barra lateral) permite personalizar la aplicación.
+### Agregar una cuenta
 
-#### Cambiar idioma
+1. Tocar **Agregar Cuenta**.
+2. Completar:
+   - **Nombre de la Cuenta**: descriptivo (ej. "Zittex Info").
+   - **Dirección de Correo**: la casilla que enviará los mensajes.
+   - **Servidor SMTP (Host)**: dirección del servidor (ej. `smtp.gmail.com`, o el host que indique el proveedor de hosting).
+   - **Puerto**: `587` (STARTTLS) o `465` (SSL directo) — usar el que indique el proveedor.
+   - **Usuario**: normalmente la dirección de correo completa.
+   - **Contraseña de Aplicación**: se recomienda una contraseña de aplicación específica, no la personal.
+3. Marcar **"Establecer como cuenta principal"** si va a ser la cuenta por defecto en nuevas campañas.
+4. Tocar **"Probar SMTP"** para verificar la conexión antes de guardar — muestra "Conexión SMTP verificada correctamente" o el error puntual (credenciales, host, certificado, etc.).
+5. Tocar **"Guardar Cuenta"**.
 
-MassMail Pro está disponible en tres idiomas:
+Se pueden cargar varias cuentas SMTP a la vez; cada campaña elige con cuál enviar.
 
-| Idioma | Código |
-|--------|--------|
-| Español | ES |
-| English | EN |
-| Français | FR |
+### Editar o eliminar
 
-Para cambiar el idioma:
-1. Ve a **Ajustes** en la barra lateral.
-2. En la sección **Idioma**, selecciona el idioma deseado.
-3. La interfaz se traducirá al instante. El cambio se guarda automáticamente.
-
-#### Créditos
-
-En la misma pantalla de Ajustes encontrarás los créditos del desarrollador y el botón para apoyar el proyecto:
-- **Desarrollador:** Christian Freelance
-- **Correo:** chrishb2000@gmail.com
-- **Sitio web:** https://christian-freelance.us/
-- **Apoyar el proyecto:** [Invítame un café mediante PayPal](https://www.paypal.com/donate/?hosted_button_id=YC6YAWBQ7HNSS)
+Pasar el mouse sobre una cuenta para ver los botones de editar y eliminar.
 
 ---
 
-### 2. Cuentas de Correo (SMTP)
+## 3. Plantillas de Correo
 
-Esta sección permite gestionar las cuentas SMTP desde las que se enviarán los correos.
+Sección **Plantillas** — diseño del HTML del correo con marcadores dinámicos.
 
-#### Agregar una cuenta
+### Crear una plantilla
 
-1. Ve a **Cuentas** en la barra lateral.
-2. Haz clic en **Agregar Cuenta**.
-3. Completa los siguientes campos:
-   - **Nombre de la Cuenta:** Un nombre descriptivo (ej. "Correo Trabajo").
-   - **Dirección de Correo:** La dirección de correo electrónico desde la que se enviarán los mensajes.
-   - **Servidor SMTP (Host):** La dirección del servidor SMTP (ej. `smtp.gmail.com`, `smtp.office365.com`).
-   - **Puerto:** Generalmente `587` (STARTTLS) o `465` (SSL directo).
-   - **Usuario:** Normalmente la dirección de correo completa.
-   - **Contraseña de Aplicación:** Se recomienda usar una contraseña de aplicación específica (no la contraseña personal). Consulta la ayuda de tu proveedor de correo (Gmail, Outlook, etc.) para generar una.
-4. Marca **"Establecer como cuenta principal"** si será la cuenta por defecto.
-5. Usa el botón **"Probar SMTP"** para verificar que la conexión funciona antes de guardar.
-6. Haz clic en **"Guardar Cuenta"**.
+1. Tocar **Nueva Plantilla**.
+2. Escribir el **Asunto del Correo** (puede incluir marcadores).
+3. Editar el HTML en alguno de los tres modos:
+   - **Código**: editor con resaltado de sintaxis.
+   - **Vista Previa**: renderizado visual.
+   - **Dividida**: código y vista previa en paralelo.
+4. Usar **marcadores dinámicos** con doble llave, por ejemplo `{{name}}`, `{{email}}`, `{{company}}` — se reemplazan por el dato real de cada destinatario al enviar. Cualquier columna que se haya importado en una lista de destinatarios queda disponible como variable con ese mismo nombre.
+5. Si no se completa el nombre de la plantilla, se usa el asunto como nombre por defecto.
+6. Tocar **Guardar**.
 
-#### Editar o eliminar una cuenta
+### Otras acciones
 
-- Pasa el ratón sobre una cuenta para ver los botones de editar (lápiz) y eliminar (papelera).
-- Al editar, también puedes eliminar la cuenta desde el botón inferior del modal.
-
-#### Consejos SMTP
-
-| Proveedor | Host | Puerto | Notas |
-|-----------|------|--------|-------|
-| Gmail | `smtp.gmail.com` | 587 | Usar contraseña de aplicación (no la personal) |
-| Outlook/Hotmail | `smtp-mail.outlook.com` | 587 | Autenticación moderna requerida |
-| Yahoo | `smtp.mail.yahoo.com` | 465 | |
-| Office 365 | `smtp.office365.com` | 587 | |
-| Proveedor propio | (varía) | (varía) | Consulta con tu proveedor |
+- **Importar/Exportar HTML**: subir o descargar el contenido como archivo `.html`.
+- **Duplicar**: crea una copia editable de una plantilla existente.
 
 ---
 
-### 3. Plantillas de Correo
+## 4. Listas de Destinatarios
 
-Permite diseñar plantillas HTML personalizables con marcadores dinámicos.
+Sección **Listas** — bases de contactos reutilizables entre campañas.
 
-#### Crear una plantilla
+### Importar un CSV
 
-1. Ve a **Plantillas** en la barra lateral.
-2. Haz clic en **Nueva Plantilla**.
-3. Se abrirá un editor completo con tres modos de vista:
-   - **Código:** Editor de HTML con resaltado de sintaxis (fondo oscuro).
-   - **Vista Previa:** Renderizado visual del HTML.
-   - **Dividida:** Código y vista previa en paralelo.
-4. En la barra lateral izquierda:
-   - Escribe el **Asunto del Correo** (puede incluir marcadores).
-   - Usa los **Marcadores (Placeholders)** para personalizar el contenido:
-     - `{{name}}` : Nombre del destinatario
-     - `{{email}}` : Correo del destinatario
-     - `{{company}}` : Empresa del destinatario
-5. El contenido HTML puede incluir imágenes locales (se incrustarán automáticamente como adjuntos CID en el mensaje).
-6. Haz clic en **Guardar**.
+1. Tocar **Importar CSV**.
+2. Seleccionar el archivo `.csv`.
+3. **Mapeo de columnas**: la app detecta automáticamente qué columna es el email (por el nombre de la columna o porque su contenido tiene forma de email) y sugiere un nombre de variable limpio para el resto de las columnas (sin espacios ni acentos). Se puede:
+   - Renombrar cualquier variable antes de confirmar.
+   - Dejar el campo vacío para **no** importar esa columna.
+   - Es obligatorio que una columna quede mapeada a `email`.
+4. Tocar **Confirmar mapeo**. Se valida el formato de cada email y se eliminan duplicados automáticamente; se muestra cuántos destinatarios quedaron válidos, inválidos y duplicados.
+5. Completar los metadatos opcionales de la lista (nombre, clasificación, zona, ciudad, país) y tocar **Guardar lista**.
 
-#### Importar / Exportar HTML
+Si después de confirmar el mapeo hace falta corregir algo, el enlace **Editar mapeo** vuelve a la tabla de mapeo sin tener que resubir el archivo.
 
-- **Importar:** Usa el botón de subida (flecha hacia arriba) para cargar un archivo `.html`.
-- **Exportar:** Usa el botón de descarga (flecha hacia abajo) para guardar la plantilla como `.html`.
+### Otras acciones
 
-#### Duplicar plantillas
-
-Usa el botón de copiar para duplicar una plantilla existente como base para una nueva.
+- **Exportar**: descarga la lista completa como CSV.
+- **Eliminar**: borra la lista guardada.
 
 ---
 
-### 4. Listas de Destinatarios
+## 5. Asistente de Campañas
 
-Gestiona las bases de datos de contactos para tus campañas.
+Sección **Campañas** → botón **Nueva Campaña**. Asistente de 4 pasos.
 
-#### Importar una lista CSV
+### Paso 1: Conceptos
 
-1. Ve a **Listas** en la barra lateral.
-2. Haz clic en **Importar CSV**.
-3. Arrastra o selecciona un archivo `.csv`. El archivo **debe** contener una columna llamada `email`.
-4. La aplicación validará automáticamente:
-   - Correos electrónicos válidos (formato correcto).
-   - Eliminación de duplicados.
-   - Omisión de filas sin correo válido.
-5. Después de la importación, completa los metadatos opcionales:
-   - **Nombre de la lista:** Útil para identificar la lista.
-   - **Clasificación:** Por ejemplo: clientes, leads, proveedores.
-   - **Zona:** Por ejemplo: norte, sur, levante.
-   - **Ciudad / País:** Para segmentación geográfica.
-6. Haz clic en **Guardar lista**.
+- Nombre de la campaña.
+- Cuenta de envío (SMTP) — se puede buscar por nombre.
+- Plantilla — se puede buscar por nombre o asunto.
 
-#### Columnas adicionales en el CSV
+### Paso 2: Destinatarios
 
-Puedes incluir columnas adicionales además de `email` (como `name`, `company`, etc.). Estas se usarán como marcadores en las plantillas (`{{name}}`, `{{company}}`, etc.).
+Dos opciones:
+- **Usar lista guardada**: elegir una lista ya importada en la sección Listas.
+- **Subir Lista de Destinatarios**: subir un CSV nuevo directo desde el asistente (validación automática de formato y duplicados; a diferencia de la importación en Listas, este atajo no tiene mapeo de columnas — requiere que el CSV ya tenga una columna llamada `email`).
 
-Ejemplo de CSV válido:
-```csv
-email,name,company,city
-cliente1@ejemplo.com,Juan Pérez,Empresa SL,Madrid
-cliente2@ejemplo.com,María García,Corp Inc,Barcelona
-```
+### Paso 3: Revisión
 
-#### Exportar o eliminar listas
+- **Total de destinatarios** y vista previa personalizada usando el primer contacto de la lista (muestra cómo quedan los marcadores `{{...}}` reemplazados con datos reales).
+- **Pausa entre correos**: sin pausa, 1, 3, 5 o 10 segundos — para no superar límites de velocidad del proveedor SMTP.
+- **Reintentos por fallo**: 0 a 3 intentos adicionales por destinatario si el envío falla.
 
-- Usa el icono de descarga para exportar una lista a CSV.
-- Usa el icono de papelera para eliminar una lista.
+### Paso 4: Lanzamiento
+
+1. Tocar **"Empezar Envío Ahora"**.
+2. Progreso en vivo: porcentaje, enviados y fallidos.
+3. Al terminar, la campaña queda en el historial con estado **Completada**.
+
+> Una vez lanzada la campaña no se puede detener desde la interfaz. Si se cierra la pestaña o se pierde conexión, el envío se interrumpe para los contactos restantes.
 
 ---
 
-### 5. Asistente de Campañas
+## 6. Historial de Campañas
 
-Es el corazón de la aplicación. Permite configurar y ejecutar campañas de envío masivo en **4 pasos**.
+Sección **Campañas** (fuera del asistente) — lista de campañas anteriores con su estado (Completada / Enviando / Fallida), destinatarios totales, enviados y fallidos.
 
-#### Paso 1: Conceptos
-
-1. **Nombre de la campaña:** Ponle un nombre descriptivo.
-2. **Cuenta de Envío:** Selecciona la cuenta SMTP desde la que enviar. Puedes buscar entre tus cuentas.
-3. **Seleccionar Plantilla:** Elige la plantilla HTML que usarás. Puedes buscar por nombre o asunto.
-
-#### Paso 2: Destinatarios
-
-Tienes dos opciones:
-
-**Opción A - Usar lista guardada:**
-- Selecciona una lista previamente importada. Se cargarán sus destinatarios automáticamente.
-
-**Opción B - Subir nuevo CSV:**
-- Arrastra o selecciona un archivo `.csv` con los destinatarios.
-- Los datos se validarán automáticamente (formato, duplicados).
-- Opcionalmente, puedes guardar la lista para usarla en el futuro completando los metadatos.
-
-#### Paso 3: Revisión
-
-Antes de lanzar la campaña, revisa:
-
-1. **Detalles de la Campaña:** Nombre y número de destinatarios.
-2. **Configuración:** Cuenta y plantilla seleccionadas.
-3. **Control de Envío:**
-   - **Pausa entre correos:** Intervalo de espera entre cada envío (0, 1, 3, 5 o 10 segundos). Útil para evitar límites de velocidad del proveedor SMTP.
-   - **Reintentos por fallo:** Número de intentos adicionales si un envío falla (0-3).
-4. **Vista previa personalizada:** Se muestra una previsualización usando el primer destinatario de la lista.
-
-#### Paso 4: Lanzamiento
-
-1. Haz clic en **"Empezar Envío Ahora"**.
-2. El progreso se muestra en tiempo real:
-   - Porcentaje completado.
-   - Número de correos enviados exitosamente.
-   - Número de fallos.
-3. Al finalizar, serás redirigido al historial de campañas.
-
-> **Nota:** Una vez iniciada la campaña, el proceso no se puede detener desde la interfaz. Si cierras la aplicación, el envío se interrumpirá para los contactos restantes.
+- **Exportar**: descarga un CSV con el detalle de cada envío (destinatario, estado, asunto, error, fecha).
+- **Reintentar**: crea una nueva campaña solo con los destinatarios que fallaron en la original.
+- **Eliminar**: borra la campaña del historial (no reenvía nada, solo borra el registro).
 
 ---
 
-### 6. Historial de Campañas
+## 7. Ajustes
 
-Muestra todas las campañas realizadas con su estado y resultados.
-
-#### Estados de campaña
-
-| Estado | Descripción |
-|--------|-------------|
-| COMPLETADA | Todos los correos se procesaron (puede haber fallos parciales). |
-| ENVIANDO | La campaña está actualmente en progreso. |
-| FALLIDA | Hubo errores en el envío (se muestran los detalles). |
-
-#### Acciones disponibles
-
-- **Exportar:** Descarga un CSV con el registro detallado de cada envío (destinatario, estado, asunto, error, fecha).
-- **Reintentar:** Crea una nueva campaña solo con los destinatarios que fallaron en la campaña original.
-- **Eliminar:** Borra la campaña del historial.
-
-#### Panel de Control
-
-La pantalla principal (Panel) muestra:
-- **Estadísticas:** Correos enviados, plantillas activas, cuentas de envío, tasa de éxito.
-- **Gráfico:** Rendimiento de las últimas campañas (barras).
-- **Actividad Reciente:** Últimas 5 campañas registradas.
+Sección **Ajustes** — selector completo de idioma (Español / English / Français) y créditos del proyecto.
 
 ---
 
-## Solución de Problemas
+## 8. Tema claro/oscuro e idioma rápido
+
+Al pie de la barra lateral, arriba de "Cerrar Sesión", hay dos accesos directos:
+
+- **Botón sol/luna**: alterna entre modo claro y modo oscuro. La preferencia se guarda en el navegador (no requiere volver a elegirla cada vez que se entra).
+- **Selector ES/EN**: cambia el idioma de toda la interfaz al instante, sin entrar a Ajustes. Para francés, usar el selector completo en Ajustes.
+
+---
+
+## 9. Asistente de ayuda con IA
+
+Botón flotante (ícono de robot) abajo a la derecha, visible en cualquier pantalla una vez logueado. Responde preguntas sobre cómo usar EMKT Zittex — no sobre otros temas.
+
+1. Tocar el botón para abrir el panel de chat.
+2. Escribir la pregunta y enviar con **Enter** (Shift+Enter para salto de línea).
+3. La respuesta aparece en unos segundos.
+
+Si el mensaje dice que el asistente "no está configurado en este servidor", significa que falta cargar la clave de IA (`GEMINI_API_KEY`) del lado del servidor — es un problema de configuración, no del uso de la app.
+
+---
+
+## 10. Solución de Problemas
 
 ### Error de conexión SMTP
 
-- Verifica que el host, puerto y credenciales sean correctos.
-- Algunos proveedores requieren **contraseñas de aplicación** específicas (Gmail, Outlook).
-- Asegúrate de que tu proveedor SMTP permita conexiones desde aplicaciones de terceros.
-- Prueba primero con el botón **"Probar SMTP"** antes de guardar la cuenta.
+- Revisar host, puerto, usuario y contraseña.
+- Usar contraseña de aplicación (no la personal) si el proveedor lo exige (Gmail, Outlook, etc.).
+- Probar primero con **"Probar SMTP"** antes de guardar la cuenta.
+- Si el error menciona el certificado, verificar que el host escrito coincida con el nombre para el que está emitido el certificado SSL del servidor.
 
-### El archivo CSV no se importa
+### El CSV no importa destinatarios
 
-- Asegúrate de que el archivo tenga una columna llamada exactamente `email`.
-- Verifica que los correos tengan un formato válido (`usuario@dominio.com`).
-- Los duplicados se omiten automáticamente.
+- En **Listas**: revisar el paso de mapeo — una columna tiene que estar asignada a la variable `email`.
+- En el asistente de **Campañas** (subida rápida): el CSV debe tener una columna llamada exactamente `email` (no tiene mapeo).
+- Verificar formato de email válido (`usuario@dominio.com`). Los duplicados se omiten automáticamente.
 
-### La aplicación no se abre
+### Los correos no llegan a destino
 
-- Si usas el instalador, asegúrate de tener permisos de administrador.
-- Si usas la versión portátil, prueba ejecutando como administrador.
-- Verifica que tu sistema cumpla con los requisitos mínimos.
+- Revisar la carpeta de spam del destinatario.
+- Aumentar la pausa entre correos (3-5 segundos) si el proveedor SMTP está limitando el envío.
+- Usar una cuenta SMTP con buena reputación de envío.
 
-### Los correos no llegan a los destinatarios
+### El asistente de IA no responde
 
-- Revisa la carpeta de **spam** o **correo no deseado**.
-- Verifica que la plantilla HTML no tenga elementos bloqueados por el proveedor de correo.
-- Aumenta la pausa entre correos (3-5 segundos) para evitar ser marcado como spam.
-- Usa una cuenta SMTP con buena reputación de envío.
-
-### Cambio de idioma
-
-- El idioma se guarda automáticamente al seleccionarlo en **Ajustes**.
-- Si el cambio no se refleja de inmediato, reinicia la aplicación.
+- Si dice "no está configurado", falta la clave `GEMINI_API_KEY` en el servidor — avisar al administrador.
+- Si tarda mucho o da error de red, reintentar en unos segundos.
 
 ---
 
-## Soporte y Donaciones
-
-Para reportar problemas, sugerencias o invitar un café al desarrollador:
-
-- **Desarrollador:** Christian Freelance
-- **Correo:** chrishb2000@gmail.com
-- **Sitio web:** https://christian-freelance.us/
-- **Donaciones (PayPal):** [Invítame un café](https://www.paypal.com/donate/?hosted_button_id=YC6YAWBQ7HNSS)
-
----
-
-*MassMail Pro Desktop v1.0.0*
+*EMKT Zittex*
