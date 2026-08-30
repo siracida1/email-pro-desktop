@@ -29,11 +29,13 @@ const escapeCsvValue = (value: unknown) => {
   return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
 };
 
-const parseRecipientCsv = (text: string) => {
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const parseRecipientCsvRaw = (text: string) => {
   const result = Papa.parse<Record<string, string>>(text, {
     header: true,
     skipEmptyLines: true,
-    transformHeader: header => header.trim().replace(/^\uFEFF/, '').toLowerCase(),
+    transformHeader: header => header.trim().replace(/^﻿/, ''),
     transform: value => value.trim()
   });
 
@@ -41,30 +43,68 @@ const parseRecipientCsv = (text: string) => {
     throw new Error('El archivo CSV no se pudo leer correctamente. Revisa el formato e inténtalo de nuevo.');
   }
 
+  const headers = result.meta.fields || [];
+  if (headers.length === 0) {
+    throw new Error('El CSV no tiene columnas.');
+  }
+
+  return { headers, rows: result.data };
+};
+
+const cleanVarName = (header: string) => {
+  const cleaned = header
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .trim().toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+  return cleaned || 'campo';
+};
+
+const guessColumnMapping = (header: string, sampleValues: string[]) => {
+  const h = header.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  if (h.includes('mail')) return 'email';
+  const nonEmpty = sampleValues.filter(v => v);
+  const emailish = nonEmpty.filter(v => EMAIL_REGEX.test(v));
+  if (nonEmpty.length > 0 && emailish.length / nonEmpty.length > 0.5) return 'email';
+  return cleanVarName(header);
+};
+
+const buildRecipientsFromMapping = (
+  rows: Record<string, string>[],
+  headers: string[],
+  mapping: Record<string, string>
+) => {
+  const activeMappings = headers
+    .map(header => ({ header, varName: mapping[header]?.trim() }))
+    .filter((m): m is { header: string; varName: string } => Boolean(m.varName));
+
   let invalid = 0;
   let duplicates = 0;
   const seenEmails = new Set<string>();
-  const recipients = result.data.filter(row => {
-    const email = row.email?.trim();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  const recipients: Recipient[] = [];
+
+  rows.forEach(row => {
+    const recipient: Recipient = { email: '' };
+    activeMappings.forEach(({ header, varName }) => {
+      recipient[varName] = row[header] ?? '';
+    });
+
+    const email = recipient.email?.trim();
+    if (!email || !EMAIL_REGEX.test(email)) {
       invalid++;
-      return false;
+      return;
     }
 
     const normalizedEmail = email.toLowerCase();
     if (seenEmails.has(normalizedEmail)) {
       duplicates++;
-      return false;
+      return;
     }
 
     seenEmails.add(normalizedEmail);
-    row.email = email;
-    return true;
-  }) as Recipient[];
-
-  if (recipients.length === 0) {
-    throw new Error('No se encontraron destinatarios válidos. El CSV debe incluir una columna email.');
-  }
+    recipient.email = email;
+    recipients.push(recipient);
+  });
 
   return { recipients, summary: { valid: recipients.length, invalid, duplicates } };
 };
@@ -86,6 +126,9 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [sourceFileName, setSourceFileName] = useState('');
+  const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
+  const [csvRawRows, setCsvRawRows] = useState<Record<string, string>[]>([]);
+  const [columnMapping, setColumnMapping] = useState<Record<string, string>>({});
   const [parsedRecipients, setParsedRecipients] = useState<Recipient[]>([]);
   const [csvSummary, setCsvSummary] = useState(emptySummary);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -112,6 +155,9 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
     setCity('');
     setCountry('');
     setSourceFileName('');
+    setCsvHeaders([]);
+    setCsvRawRows([]);
+    setColumnMapping({});
     setParsedRecipients([]);
     setCsvSummary(emptySummary);
     if (fileInputRef.current) fileInputRef.current.value = '';
@@ -130,20 +176,54 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
     reader.onload = event => {
       try {
         const text = event.target?.result as string;
-        const parsed = parseRecipientCsv(text);
-        setParsedRecipients(parsed.recipients);
-        setCsvSummary(parsed.summary);
+        const { headers, rows } = parseRecipientCsvRaw(text);
+        const mapping: Record<string, string> = {};
+        headers.forEach(header => {
+          const sampleValues = rows.slice(0, 15).map(row => row[header] || '');
+          mapping[header] = guessColumnMapping(header, sampleValues);
+        });
+
+        setCsvHeaders(headers);
+        setCsvRawRows(rows);
+        setColumnMapping(mapping);
+        setParsedRecipients([]);
+        setCsvSummary(emptySummary);
         setSourceFileName(file.name);
         if (!importName.trim()) {
           setImportName(file.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' '));
         }
       } catch (err) {
         alert(err instanceof Error ? err.message : String(err));
+        setCsvHeaders([]);
+        setCsvRawRows([]);
+        setColumnMapping({});
         setParsedRecipients([]);
         setCsvSummary(emptySummary);
       }
     };
     reader.readAsText(file);
+  };
+
+  const confirmColumnMapping = () => {
+    const hasEmailMapping = Object.values(columnMapping).some(varName => varName.trim() === 'email');
+    if (!hasEmailMapping) {
+      alert(t('lists.mappingEmailRequiredError'));
+      return;
+    }
+
+    const { recipients, summary } = buildRecipientsFromMapping(csvRawRows, csvHeaders, columnMapping);
+    if (recipients.length === 0) {
+      alert(t('lists.mappingNoValidError'));
+      return;
+    }
+
+    setParsedRecipients(recipients);
+    setCsvSummary(summary);
+  };
+
+  const editColumnMapping = () => {
+    setParsedRecipients([]);
+    setCsvSummary(emptySummary);
   };
 
   const saveImportedList = () => {
@@ -312,14 +392,52 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
                 <input ref={fileInputRef} type="file" accept=".csv" onChange={handleFileUpload} className="hidden" />
               </div>
 
-              {parsedRecipients.length > 0 && (
-                <div className="rounded-2xl border border-green-100 bg-green-50 p-4 text-sm text-green-700">
-                  <strong>{t('lists.importValid', { count: csvSummary.valid })}</strong>
-                  {csvSummary.invalid > 0 ? ` · ${t('lists.importInvalid', { count: csvSummary.invalid })}` : ''}
-                  {csvSummary.duplicates > 0 ? ` · ${t('lists.importDuplicates', { count: csvSummary.duplicates })}` : ''}
+              {csvHeaders.length > 0 && parsedRecipients.length === 0 && (
+                <div className="rounded-2xl border border-slate-200 overflow-hidden">
+                  <div className="px-4 py-3 bg-slate-50 border-b border-slate-100">
+                    <p className="text-sm font-bold text-slate-700">{t('lists.mappingTitle')}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{t('lists.mappingHint')}</p>
+                  </div>
+                  <div className="divide-y divide-slate-100 max-h-64 overflow-y-auto">
+                    {csvHeaders.map(header => (
+                      <div key={header} className="flex items-center gap-3 px-4 py-2.5">
+                        <span className="flex-1 text-sm text-slate-600 truncate" title={header}>{header}</span>
+                        <span className="text-slate-300">→</span>
+                        <input
+                          type="text"
+                          value={columnMapping[header] || ''}
+                          onChange={e => setColumnMapping(prev => ({ ...prev, [header]: e.target.value }))}
+                          placeholder={t('lists.mappingIgnore')}
+                          className={`w-40 px-3 py-1.5 rounded-lg border text-sm outline-none focus:ring-2 focus:ring-blue-500 ${columnMapping[header]?.trim() === 'email' ? 'border-blue-300 bg-blue-50 font-semibold text-blue-700' : 'border-slate-200'}`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+                    <button
+                      onClick={confirmColumnMapping}
+                      className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-all"
+                    >
+                      {t('lists.mappingConfirm')}
+                    </button>
+                  </div>
                 </div>
               )}
 
+              {parsedRecipients.length > 0 && (
+                <div className="rounded-2xl border border-green-100 bg-green-50 p-4 text-sm text-green-700 flex items-center justify-between gap-3">
+                  <div>
+                    <strong>{t('lists.importValid', { count: csvSummary.valid })}</strong>
+                    {csvSummary.invalid > 0 ? ` · ${t('lists.importInvalid', { count: csvSummary.invalid })}` : ''}
+                    {csvSummary.duplicates > 0 ? ` · ${t('lists.importDuplicates', { count: csvSummary.duplicates })}` : ''}
+                  </div>
+                  <button onClick={editColumnMapping} className="shrink-0 text-xs font-bold underline hover:no-underline">
+                    {t('lists.mappingEdit')}
+                  </button>
+                </div>
+              )}
+
+              {parsedRecipients.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
                   <label className="block text-xs font-bold text-slate-500 uppercase mb-2">{t('lists.fieldListName')}</label>
@@ -372,6 +490,7 @@ const RecipientLists: React.FC<RecipientListsProps> = ({ lists, setLists }) => {
                   />
                 </div>
               </div>
+              )}
             </div>
 
             <div className="flex justify-end gap-3 px-6 py-5 border-t border-slate-100 bg-slate-50">
