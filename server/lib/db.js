@@ -1,33 +1,44 @@
-const fs = require('fs');
-const path = require('path');
+const fetch = require('node-fetch');
 
-const DB_DIR = path.join(__dirname, '..', '..', 'data');
-const DB_FILE = path.join(DB_DIR, 'db.json');
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const TABLE = 'emkt_data';
 
-function readAll() {
-  if (!fs.existsSync(DB_FILE)) return {};
-  try {
-    return JSON.parse(fs.readFileSync(DB_FILE, 'utf-8'));
-  } catch {
-    return {};
+function headers(extra) {
+  return {
+    apikey: SUPABASE_KEY,
+    Authorization: `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+    ...extra
+  };
+}
+
+async function getData(key) {
+  const url = `${SUPABASE_URL}/rest/v1/${TABLE}?key=eq.${encodeURIComponent(key)}&select=value`;
+  const res = await fetch(url, { headers: headers() });
+  if (!res.ok) return null;
+  const rows = await res.json();
+  return rows[0]?.value ?? null;
+}
+
+async function saveData(key, value) {
+  // The value column is NOT NULL (it's jsonb, not "maybe jsonb"), so an
+  // explicit null write means "clear this key" -- delete the row instead
+  // of inserting, keeping the same "missing key -> getData returns null"
+  // contract from the caller's point of view.
+  if (value === null) {
+    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?key=eq.${encodeURIComponent(key)}`;
+    const res = await fetch(url, { method: 'DELETE', headers: headers() });
+    return res.ok;
   }
-}
 
-function writeAll(data) {
-  if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
-}
-
-function getData(key) {
-  const data = readAll();
-  return data[key] ?? null;
-}
-
-function saveData(key, value) {
-  const data = readAll();
-  data[key] = value;
-  writeAll(data);
-  return true;
+  const url = `${SUPABASE_URL}/rest/v1/${TABLE}?on_conflict=key`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: headers({ Prefer: 'resolution=merge-duplicates' }),
+    body: JSON.stringify({ key, value, updated_at: new Date().toISOString() })
+  });
+  return res.ok;
 }
 
 module.exports = { getData, saveData };
